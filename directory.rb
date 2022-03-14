@@ -23,21 +23,21 @@ def input_students
 end
   
 def print_header
-  puts "The students of Villains Academy"
-  puts "-------------"
+  puts "The students of Villains Academy".center(100)
+  puts "-------------".center(100)
 end
 
 def print(students)
   students.each do |student|
     puts "#{student[:name]}, (#{student[:cohort]} cohort).
-    Hobbies: #{student[:hobbies]},
-    Country of birth: #{student[:country_of_birth]},
-    Height: #{student[:height]}."
+Hobbies: #{student[:hobbies]},
+Country of birth: #{student[:country_of_birth]},
+Height: #{student[:height]}."
   end
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students"
+  puts "Overall, we have #{students.count} great students".center(100)
 end
   
 # nothing happens until we call the methods
