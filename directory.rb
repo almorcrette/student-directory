@@ -23,7 +23,7 @@ end
 
 def print(students, letter)
   students.each_with_index do |student, index|
-    if student[:name].chr.downcase == letter.downcase
+    if student[:name].chr.downcase == letter.downcase and student[:name].length < 12
       puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort)"
     end
   end
