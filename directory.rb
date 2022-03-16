@@ -1,4 +1,11 @@
 ## Methods
+## This program has the following methods
+## 1. Start message
+## 2. Input students
+## 3. Print header
+## 4. Print footer
+## 5. Print sections of students by starting name letter
+## 6. Print students by cohorts
 
 # Start message
 def start_message
@@ -133,7 +140,7 @@ end
 
   
 # nothing happens until we call the methods
-#start_message
+
 puts start_message
 students = input_students
 if students.count == 0
