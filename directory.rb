@@ -71,12 +71,14 @@ def print_header
   puts "-------------".center(100)
 end
 
-def print(students)
-  students.each do |student|
-    puts "#{student[:name]}, (#{student[:cohort]} cohort).
+def print(students, letter)
+  students.each_with_index do |student, index|
+    if student[:name].chr.downcase == letter.downcase and student[:name].length < 12
+      puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort)
 Hobbies: #{student[:hobbies]},
 Country of birth: #{student[:country_of_birth]},
 Height: #{student[:height]}."
+    end
   end
 end
 
@@ -87,5 +89,5 @@ end
 # nothing happens until we call the methods
 students = input_students
 print_header
-print(students)
+print(students, "A")
 print_footer(students)
