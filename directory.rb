@@ -1,26 +1,27 @@
+## Methods
 
 # Start message
 def start_message
-  puts "Welcome to the Villains Academy Student Directory\n".center(100)
-  puts "Current Status of the Student Directory:\n"
+  puts "\n" + "Welcome to the Villains Academy Student Directory".center(100)
 end
-
-## Methods
 
 # Input student
 
 def input_students
   
+  # Initiate an empty array to receive new student information
   students = []
 
   # Receive preference to enter a new student or not
+  # While loop with break prevents invalid entry (not 1 or 0)
   while true do
     puts "Enter new student? 1 for yes, 0 for no"
+    # Demonstrating alternative to chomp
     new_entry = gets.delete_suffix("\n")
     break if new_entry == "0" || new_entry == "1"
   end
   
-  # Loop process for entering new students until user states no more
+  # Loop process for entering new students until user states no more new entries
   while new_entry != "0" do
     
     # Receive surname
@@ -33,11 +34,11 @@ def input_students
     
     # Start again if either field is empty
     if surname == "" || first_name == ""
-      puts "Invalid entry. Fields must be non-empty. Try again"
+      puts "Invalid entry. Name fields must be non-empty. Try again"
       next
     end
     
-    # Receive cohort, via loop until valid entry for cohort given
+    # Receive cohort information, via loop until valid entry for cohort given
     cohort = "not given"
     until cohort != "not given"
       puts "Enter cohort: (november, december, january, february)"
@@ -50,8 +51,11 @@ def input_students
     cohort = cohort.to_sym
     
     # Option to re-enter for typos
-    puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort}? 1 for yes. 0 for re-enter. x for finish without saving"
-    selection = gets.chomp
+    while true
+      puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort.capitalize}? 1 for yes. 0 for re-enter. x to exit without saving"
+      selection = gets.chomp
+      break if ["0", "1", "x"].include?(selection) 
+    end
     case selection
     when "0"
       next
@@ -70,9 +74,13 @@ def input_students
     
     puts "Now we have #{students.count} students"
     
-    # Receive preference for another entry
-    puts "Another entry? 1 for yes, 0 for no"
-    new_entry = gets.chomp
+    # Receive preference for another entry,
+    #including while loop with break to repeat until valid entry (1, 0)
+    while true do
+      puts "Another entry? 1 for yes, 0 for no"
+      new_entry = gets.chomp
+      break if new_entry == "0" || new_entry == "1"
+    end
   
   end # return the array of students
   
@@ -111,9 +119,13 @@ end
   
 # nothing happens until we call the methods
 #start_message
+puts start_message
 students = input_students
-print_header
-p students
+if students.count == 0
+  puts "No students in directory"
+else
+  print_header
 #print_section(students, "A")
-print_cohorts(students)
-print_footer(students)
+  print_cohorts(students)
+  print_footer(students)
+end
