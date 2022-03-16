@@ -14,8 +14,11 @@ def input_students
   students = []
 
   # Receive preference to enter a new student or not
-  puts "Enter new student? 1 for yes, 0 for no"
-  new_entry = gets.chomp
+  while true do
+    puts "Enter new student? 1 for yes, 0 for no"
+    new_entry = gets.delete_suffix("\n")
+    break if new_entry == "0" || new_entry == "1"
+  end
   
   # Loop process for entering new students until user states no more
   while new_entry != "0" do
