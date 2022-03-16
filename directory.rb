@@ -1,9 +1,18 @@
+
+# Start message
+def start_message
+  puts "Welcome to the Villains Academy Student Directory\n".center(100)
+  puts "Current Status of the Student Directory:\n"
+end
+
+## Methods
+
 # Input student
 
 def input_students
-  # Initialize students array
-  students = []
   
+  students = []
+
   # Receive preference to enter a new student or not
   puts "Enter new student? 1 for yes, 0 for no"
   new_entry = gets.chomp
@@ -30,13 +39,15 @@ def input_students
     until cohort != "not given"
       puts "Enter cohort: (november, december, january, february)"
       cohort = gets.chomp
-      cohort = "not given" if cohort != "november" && cohort != "december" && cohort != "january" && cohort != "february"
-      puts "Invalid entry for cohort. Try again."
+      if cohort != "november" && cohort != "december" && cohort != "january" && cohort != "february"
+        cohort = "not given" 
+        puts "Invalid entry for cohort. Try again."
+      end
     end
     cohort = cohort.to_sym
     
     # Option to re-enter for typos
-    puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort}? 1 for yes. 0 for re-enter. x for finish"
+    puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort}? 1 for yes. 0 for re-enter. x for finish without saving"
     selection = gets.chomp
     case selection
     when "0"
@@ -60,7 +71,7 @@ def input_students
     puts "Another entry? 1 for yes, 0 for no"
     new_entry = gets.chomp
   
-  end# return the array of students
+  end # return the array of students
   
   students
   
@@ -71,7 +82,7 @@ def print_header
   puts "-------------".center(100)
 end
 
-def print(students, letter)
+def print_section(students, letter)
   students.each_with_index do |student, index|
     if student[:name].chr.downcase == letter.downcase and student[:name].length < 12
       puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort)
@@ -85,9 +96,21 @@ end
 def print_footer(students)
   puts "Overall, we have #{students.count} great students".center(100)
 end
+
+def print_cohorts(students)
+  cohorts = students.map { |student| student[:cohort] }.uniq
+  cohorts.each do |cohort|
+    puts "#{cohort}:"
+    students.each { |student| puts student[:name] if student[:cohort] == cohort }
+  end
+end
+
   
 # nothing happens until we call the methods
+#start_message
 students = input_students
 print_header
-print(students, "A")
+p students
+#print_section(students, "A")
+print_cohorts(students)
 print_footer(students)
