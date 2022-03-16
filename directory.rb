@@ -43,16 +43,21 @@ def input_students
     until cohort != "not given"
       puts "Enter cohort: (november, december, january, february)"
       cohort = gets.chomp
-      if cohort != "november" && cohort != "december" && cohort != "january" && cohort != "february"
+      if cohort != "november" &&
+         cohort != "december" &&
+         cohort != "january" &&
+         cohort != "february"
         cohort = "not given" 
         puts "Invalid entry for cohort. Try again."
       end
     end
     cohort = cohort.to_sym
     
-    # Option to re-enter for typos
+    # Option to re-enter for typos,
+    #including while loop with break for invalid entry
     while true
-      puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort.capitalize}? 1 for yes. 0 for re-enter. x to exit without saving"
+      puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort.capitalize}?
+1 for yes. 0 for re-enter. x to exit without saving"
       selection = gets.chomp
       break if ["0", "1", "x"].include?(selection) 
     end
@@ -87,11 +92,15 @@ def input_students
   students
   
 end
-  
+
+# Header printer
+
 def print_header
   puts "The students of Villains Academy".center(100)
   puts "-------------".center(100)
 end
+
+# Print students starting with a particular letter
 
 def print_section(students, letter)
   students.each_with_index do |student, index|
@@ -104,14 +113,20 @@ Height: #{student[:height]}."
   end
 end
 
+# Print footer
+
 def print_footer(students)
-  puts students.count == 1 ? "Now we have 1 student".center(100) : "Overall, we have #{students.count} great students".center(100)
+  puts students.count == 1 ? 
+  "Now we have 1 student".center(100) :
+  "Overall, we have #{students.count} great students".center(100)
 end
+
+# Print students by cohorts
 
 def print_cohorts(students)
   cohorts = students.map { |student| student[:cohort] }.uniq
   cohorts.each do |cohort|
-    puts "#{cohort}:"
+    puts "#{cohort.capitalize}:"
     students.each { |student| puts student[:name] if student[:cohort] == cohort }
   end
 end
