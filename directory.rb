@@ -94,7 +94,7 @@ Height: #{student[:height]}."
 end
 
 def print_footer(students)
-  puts "Overall, we have #{students.count} great students".center(100)
+  puts students.count == 1 ? "Now we have 1 student".center(100) : "Overall, we have #{students.count} great students".center(100)
 end
 
 def print_cohorts(students)
