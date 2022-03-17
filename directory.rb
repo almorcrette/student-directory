@@ -15,7 +15,7 @@ def input_students
   while true do
     puts "Enter new student? 1 for yes, 0 for no"
     # Demonstrating alternative to chomp
-    new_entry = gets.delete_suffix("\n")
+    new_entry = STDIN.gets.delete_suffix("\n")
     break if new_entry == "0" || new_entry == "1"
   end
   
@@ -24,11 +24,11 @@ def input_students
     
     # Receive surname
     puts "Enter surname:"
-    surname = gets.chomp
+    surname = STDIN.gets.chomp
     
     # Receive first name
     puts "Enter First name:"
-    first_name = gets.chomp
+    first_name = STDIN.gets.chomp
     
     # Start again if either field is empty
     if surname == "" || first_name == ""
@@ -40,7 +40,7 @@ def input_students
     cohort = "not given"
     until cohort != "not given"
       puts "Enter cohort: (november, december, january, february)"
-      cohort = gets.chomp
+      cohort = STDIN.gets.chomp
       if cohort != "november" &&
          cohort != "december" &&
          cohort != "january" &&
@@ -56,7 +56,7 @@ def input_students
     while true
       puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort.capitalize}?
 1 for yes. 0 for re-enter. x to exit without saving"
-      selection = gets.chomp
+      selection = STDIN.gets.chomp
       break if ["0", "1", "x"].include?(selection) 
     end
     case selection
@@ -81,7 +81,7 @@ def input_students
     #including while loop with break to repeat until valid entry (1, 0)
     while true do
       puts "Another entry? 1 for yes, 0 for no"
-      new_entry = gets.chomp
+      new_entry = STDIN.gets.chomp
       break if new_entry == "0" || new_entry == "1"
     end
   
@@ -176,7 +176,7 @@ end
 def interactive_menu
   loop do
     print_menu 
-    selection = gets.chomp  
+    selection = STDIN.gets.chomp  
     process(selection)
   end
 end
@@ -197,19 +197,36 @@ def save_students
   puts "Directory saved!"
 end
 
-## Laoding the data from the file
+## Loading the data
+
+# Loading the data
  
-  def load_students
-    puts "Loading directory..."
-    file = File.open("students.csv", "r")
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
-      @students << {name: name, cohort: cohort.to_sym}
-    end
-    file.close
-    puts "Directory loaded!"
+def load_students(filename = "students.csv")
+  puts "Loading directory..."
+  file = File.open(filename, "w")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
   end
+  file.close
+  puts "Directory loaded!"
+end
+
+# Try loading the data from argument when program run
+
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
+end
 
 ## Execute program
 
+try_load_students
 interactive_menu
