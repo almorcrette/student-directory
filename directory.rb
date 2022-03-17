@@ -125,7 +125,7 @@ def input_students
       break
     end
     add_student(name, cohort)
-    puts "Now we have #{@students.count} students"
+    puts "Student added. Now we have #{@students.count} students"
     new_entry = more? # Will return "0" if no more entries
   end
 end
