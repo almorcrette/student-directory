@@ -1,9 +1,9 @@
-# Initiate instance variable students, the array that will hold the directory
+# Initiate instance variable students, the array that holds the directoy
 @students = []
 
 # Start message
 def start_message
-  puts "\n" + "Welcome to the Villains Academy Student Directory".center(100)
+  puts "\n" + "Welcome to the Villains Academy Student Directory\n".center(100)
 end
 
 # Add student
@@ -18,86 +18,117 @@ def add_student(name, cohort)
   }
 end
 
-## Input student method
+## Input student methods
+# - INPUT_STUDENTS, calling: 
+#   - CHECK_INSTRUCTION_NEW_ENTRY
+#   - NAME_ENTRY
+#   - COHORT_ENTRY
+#   - CONFIRM_ENTRY
+#   - MORE?
 
-def input_students
-  
-  # Receive preference to enter a new student or not
-  # While loop with break prevents invalid entry (not 1 or 0)
+# CHECK_INSTRUCTION_NEW_ENTRY: Confirming instruction to enter new student
+# While loop with break prevents invalid entry (not 1 or 0)
+# Demonstrating alternative to chomp
+
+def check_instruction_new_entry
   while true do
     puts "Enter new student? 1 for yes, 0 for no"
-    # Demonstrating alternative to chomp
     new_entry = STDIN.gets.delete_suffix("\n")
     break if new_entry == "0" || new_entry == "1"
   end
-  
-  # Loop process for entering new students until user states no more new entries
-  while new_entry != "0" do
-    
-    # Receive surname
-    puts "Enter surname:"
-    surname = STDIN.gets.chomp
-    
-    # Receive first name
-    puts "Enter First name:"
-    first_name = STDIN.gets.chomp
-    
-    name = first_name + " " + surname
-    
-    # Start again if either field is empty
-    if surname == "" || first_name == ""
-      puts "Invalid entry. Name fields must be non-empty. Try again"
-      next
-    end
-    
-    # Receive cohort information, via loop until valid entry for cohort given
-    cohort = "not given"
-    until cohort != "not given"
-      puts "Enter cohort: (november, december, january, february)"
-      cohort = STDIN.gets.chomp
-      if cohort != "november" &&
-         cohort != "december" &&
-         cohort != "january" &&
-         cohort != "february"
-        cohort = "not given" 
-        puts "Invalid entry for cohort. Try again."
-      end
-    end
-    
-    # Option to re-enter for typos,
-    #including while loop with break for invalid entry
-    while true
-      puts "Sure you want to enter: #{first_name} #{surname}, cohort #{cohort.capitalize}?
-1 for yes. 0 for re-enter. x to exit without saving"
-      selection = STDIN.gets.chomp
-      break if ["0", "1", "x"].include?(selection) 
-    end
-    case selection
-    when "0"
-      next
-    when "x"
-      break
-    end
-      
-    # Add entry to array
-    add_student(name, cohort)
-    
-    puts "Now we have #{@students.count} students"
-    
-    # Receive preference for another entry,
-    #including while loop with break to repeat until valid entry (1, 0)
-    while true do
-      puts "Another entry? 1 for yes, 0 for no"
-      new_entry = STDIN.gets.chomp
-      break if new_entry == "0" || new_entry == "1"
-    end
-  
-  end # return the array of students
-  
+  new_entry
 end
 
+# NAME_ENTRY:
+# - Receive surname and first name,
+# - confirm valid,
+# - join
 
-## Print methods
+def name_entry
+  surname = ""
+  first_name = ""
+  loop do
+    puts "Enter surname:"
+    surname = STDIN.gets.chomp
+    puts "Enter First name:"
+    first_name = STDIN.gets.chomp
+    if surname == "" || first_name == ""
+      puts "Invalid entry. Name fields must be non-empty. Try again"
+    else
+      break
+    end
+  end
+  name = first_name + " " + surname
+end
+
+# COHORT_ENTRY:
+# - Receive cohort information,
+# - via loop until valid entry for cohort given
+
+def cohort_entry
+  cohort = "not given"
+  until cohort != "not given"
+    puts "Enter cohort: (november, december, january, february)"
+    cohort = STDIN.gets.chomp
+    if cohort != "november" &&
+       cohort != "december" &&
+       cohort != "january" &&
+       cohort != "february"
+      cohort = "not given" 
+      puts "Invalid entry for cohort. Try again."
+    end
+  end
+  cohort
+end
+
+# CONFIRM_ENTRY
+# - including option to re-enter for typos,
+# - including while loop with break for invalid entry
+
+def confirm_entry(name, cohort)
+  while true
+    puts "Sure you want to enter: #{name}, cohort #{cohort.capitalize}?
+1 for yes. 0 for re-enter. x to exit without saving"
+    selection = STDIN.gets.chomp
+    break if ["0", "1", "x"].include?(selection) 
+  end
+  selection
+end
+  
+# MORE?
+# - Receive preference for another entry,
+# - including while loop with break to repeat until valid entry (1, 0)
+
+def more?
+  while true do
+    puts "Another entry? 1 for yes, 0 for no"
+    new_entry = STDIN.gets.chomp
+    break if new_entry == "0" || new_entry == "1"
+  end
+  new_entry
+end
+  
+# INPUT_STUDENTS:
+# - Confirm instruction to for new entry
+# - name_entry
+
+def input_students
+  new_entry = check_instruction_new_entry
+  while new_entry != "0" do
+    name = name_entry
+    cohort = cohort_entry
+    selection = confirm_entry(name, cohort)
+    case selection
+    when "0" # user wants to re-enter (typo)
+      next
+    when "x" # user wants to exit without saving
+      break
+    end
+    add_student(name, cohort)
+    puts "Now we have #{@students.count} students"
+    new_entry = more? # Will return "0" if no more entries
+  end
+end
 
 # Header printer
 
@@ -236,4 +267,5 @@ end
 ## Execute program
 
 try_load_students
+start_message
 interactive_menu
