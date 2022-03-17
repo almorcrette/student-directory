@@ -165,17 +165,18 @@ end
 def print_footer
   puts @students.count == 1 ? 
   "Now we have 1 student".center(100) :
-  "Overall, we have #{@students.count} great students".center(100)
+  "Overall, we have #{@students.count} great students\n".center(100)
 end
 
 ## Interactive menu methods
 
 def print_menu
+  puts "Menu of options".center(100)
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
   puts "4. Load the list from students.csv"
-  puts "9. Exit" # 9 because we'll be adding more items
+  puts "9. Exit\n\n" # 9 because we'll be adding more items
 end
 
 def show_students
@@ -193,15 +194,19 @@ def process(selection)
   when "1"
     input_students
   when "2" # show the students
+    puts "... preparing to show students...\n"
     show_students
   when "3"
+    puts "... preparing to save...\n"
     save_students
   when "4"
+    puts "... preparing to load students...\n"
     load_students
   when "9"
+    puts "... exiting the program...\n"
     exit # this will cause the program to terminate
   else
-    puts "I don't know what you meant, try again"
+    puts "I don't know what you meant, try again\n"
   end
 end
 
@@ -232,7 +237,7 @@ def save_students
     file.puts csv_line
   end
   file.close
-  puts "Directory saved!"
+  puts "Directory saved!\n\n"
 end
 
 ## Loading the data
@@ -247,7 +252,7 @@ def load_students(filename = "students.csv")
     add_student(name, cohort)
   end
   file.close
-  puts "Directory loaded!"
+  puts "Directory loaded!\n\n"
 end
 
 # Try loading the data from argument when program run
@@ -257,7 +262,7 @@ def try_load_students
   ARGV.first.nil? ? filename = "students.csv" : filename = ARGV.first
   if File.exists?(filename) # if it exists
     load_students(filename)
-    puts "Loaded #{@students.count} from #{filename}"
+    puts "Loaded #{@students.count} from #{filename}\n\n"
   else # if it doesn't exist
     puts "Sorry, #{filename} doesn't exist."
     exit
@@ -266,6 +271,6 @@ end
 
 ## Execute program
 
-try_load_students
 start_message
+try_load_students
 interactive_menu
