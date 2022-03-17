@@ -6,6 +6,32 @@ def start_message
   puts "\n" + "Welcome to the Villains Academy Student Directory\n".center(100)
 end
 
+# DEFINE_FILE
+# - provides user option to select default 'students.csv'
+# - or user define .csv file
+# - method used in save_students and load_students methods
+
+def define_file
+    while true do
+    puts "Default file?
+0 for default 'students.csv'
+1 to enter different file"
+  selection = STDIN.gets.chomp
+    break if selection == "0" || selection == "1"
+  end
+  if selection == "1"
+    while true do
+      puts "Enter filename"
+      filename = STDIN.gets.chomp
+      break if filename.end_with?(".csv")
+      puts "filename needs to end with '.csv'"
+    end
+  else
+    filename = "students.csv"
+  end
+  filename
+end
+
 # Add student
 
 def add_student(name, cohort)
@@ -201,7 +227,9 @@ def process(selection)
     save_students
   when "4"
     puts "... preparing to load students...\n"
-    load_students
+    filename = define_file
+    p filename
+    load_students(filename)
   when "9"
     puts "... exiting the program...\n"
     exit # this will cause the program to terminate
@@ -229,8 +257,9 @@ end
 # iterate over the array of students
 
 def save_students
+  filename = define_file
   puts "Saving directory..."
-  file = File.open("students.csv", "w")
+  file = File.open(filename, "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
