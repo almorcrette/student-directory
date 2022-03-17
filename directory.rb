@@ -6,6 +6,18 @@ def start_message
   puts "\n" + "Welcome to the Villains Academy Student Directory".center(100)
 end
 
+# Add student
+
+def add_student(name, cohort)
+  @students << {
+    name: name,
+    cohort: cohort.to_sym,
+    hobbies: "none given",
+    country_of_birth: "not given",
+    height: "not given"
+  }
+end
+
 ## Input student method
 
 def input_students
@@ -30,6 +42,8 @@ def input_students
     puts "Enter First name:"
     first_name = STDIN.gets.chomp
     
+    name = first_name + " " + surname
+    
     # Start again if either field is empty
     if surname == "" || first_name == ""
       puts "Invalid entry. Name fields must be non-empty. Try again"
@@ -49,7 +63,6 @@ def input_students
         puts "Invalid entry for cohort. Try again."
       end
     end
-    cohort = cohort.to_sym
     
     # Option to re-enter for typos,
     #including while loop with break for invalid entry
@@ -67,13 +80,7 @@ def input_students
     end
       
     # Add entry to array
-    @students << {
-        name: "#{first_name} #{surname}",
-        cohort: cohort,
-        hobbies: "none given",
-        country_of_birth: "not given",
-        height: "not given"
-      }
+    add_student(name, cohort)
     
     puts "Now we have #{@students.count} students"
     
@@ -187,7 +194,7 @@ end
 
 def save_students
   puts "Saving directory..."
-  file = File.open("students.csv", "a")
+  file = File.open("students.csv", "w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort]]
     csv_line = student_data.join(",")
@@ -203,10 +210,10 @@ end
  
 def load_students(filename = "students.csv")
   puts "Loading directory..."
-  file = File.open(filename, "w")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    add_student(name, cohort)
   end
   file.close
   puts "Directory loaded!"
